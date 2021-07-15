@@ -1,0 +1,325 @@
+ {% extends 'base.html'%}
+    {% block content%}
+
+    {% if messages %}
+        {% for message in messages %}
+         {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+        {% endfor %}
+
+    {% endif %}
+
+
+<div style="background: url('/media/img/images/home.jpg');background-repeat:no-repeat;background-size: cover;color: white;">
+<br>
+<br>
+<br>
+<div class="container" style="background-color: white;width: 50%;" >
+<form class="form-horizontal" action='/Register/'  method="POST" id="form1">
+  {% csrf_token %}
+  <center>
+  <div>
+    <h2 style="color: black">Register</h2>
+    <hr>
+  </div>
+  </center> 
+
+
+
+
+  <div class="row">
+    <div class="col-md-4 "style="margin-bottom: 20px">
+      <label style="color: black"  for="validationTooltip01">First name</label>
+      <input type="text" class="form-control" name="First_name" id="First_name" placeholder="First name" value="" required="">
+      
+    </div>
+    <div class="col-md-4 "style="margin-bottom: 20px">
+      <label style="color: black"  for="validationTooltip02">Last name</label>
+      <input type="text" class="form-control" name="Last_name" id="Last_name"  placeholder="Last name" value="" required="">
+      
+    </div>
+    <div class="col-md-4 "style="margin-bottom: 20px">
+      <label style="color: black" for="validationTooltipUsername">Username</label>
+      <div class="input-group">
+        <input type="text" class="form-control" name="Username" id="Username" placeholder="Username" value="" required="">
+        
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-4"style="margin-bottom: 20px">
+      <label style="color: black" for="validationTooltip03">Dob</label>
+      <input type="date" class="form-control" name="Dob" id="Dob" placeholder="Dob" required="">
+      
+    </div>
+    <div class="col-md-4 "style="margin-bottom: 20px">
+      <label style="color: black" for="validationTooltip04">Gender</label>
+      <select name="Gender" id="Gender" placeholder="Gender" class="form-control">
+        <option selected>Select</option>
+        <option>Male</option>
+        <option>Female</option>
+      </select>
+      
+    </div>
+    <div class="col-md-4 "style="margin-bottom: 20px">
+      <label style="color: black" for="validationTooltip05">Phone</label>
+      <input type="number" class="form-control" name="Phone" id="Phone"  placeholder="Phone" required="">
+      
+    </div>
+  </div> 
+
+  <div class="row" >
+    <div class="col-md-6" style="margin-bottom: 20px">
+      <label style="color: black" for="inputEmail4">Email</label>
+      <input type="email" class="form-control" required="" name="Email" id="Email"  placeholder="Email">
+    </div>
+
+    <div class="col-md-6" style="margin-bottom: 20px">
+      <label style="color: black" for="inputPassword4">Password</label>
+      <input type="password" class="form-control" required="" name="Password" id="Password" placeholder="Password">
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-12" style="margin-bottom: 20px">
+      <label style="color: black" for="inputAddress">Address</label>
+      <input type="text" class="form-control" required="" name="Address" id="Address" placeholder="Address">
+    </div>
+  </div>
+ 
+  
+  <div class="row">
+    <div class=" col-md-6" style="margin-bottom: 20px">
+      <label style="color: black" for="inputCity">City</label>
+      <input type="text" placeholder="City" required="" class="form-control" name="City" id="City">
+    </div>
+
+    <div class=" col-md-6" style="margin-bottom: 20px">
+      <label style="color: black" for="inputState">State</label>
+      <input type="text" placeholder="State" required="" class="form-control" name="State" id="State">
+    </div>
+    <br>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12"style="margin-bottom: 20px">
+      <label style="color: black" for="validationTooltip03">Last Qualification Required :</label>
+       <select name="LastQualificationReq" id="LastQualificationReq" class="form-control" onchange="ViewDiv(this)">
+        <option selected value="Select">Select</option>
+        <option value="10th">10th</option>
+        <option value="12th">12th</option>
+        
+      </select>
+      
+    </div>
+  </div>
+
+ 
+
+  <div id="tenthdiv" class="row" style="display: none" >
+    <div class="col-md-12" style="margin-bottom: 20px" >
+      <label style="color: black" for="inputAddress">Tenth Percentage</label>
+      <input type="text" class="form-control" required="" name="TenthPercentage" id="TenthPercentage" placeholder="TenthPercentage">
+    </div>
+  </div>
+
+  <div id="twelthdiv" class="row" style="display: none" >
+    <div class=" col-md-12" style="margin-bottom: 20px" >
+      <label style="color: black" for="inputAddress">Twelfth Percentage</label>
+      <input type="text" class="form-control" required="" name="TwelfthPercentage" id="TwelfthPercentage" placeholder="TwelfthPercentage">
+    </div>
+  </div>
+ 
+  <center>
+
+    <div class="col-md-12">
+         <br>
+  <input type="button" name="" value="Register &#62;&#62;" class="btn btn-primary" onclick="validate()">
+    <br>  <br>  <br>
+</div>
+</center>
+
+
+  </center>
+  <br>
+</form>
+ <br>
+</div>
+<br>
+<br>
+
+
+</div>
+<br> 
+
+
+<script type="text/javascript">
+  
+function ViewDiv(me) 
+{
+  var qua = me.value
+  if(qua != "Select")
+  {
+    if(qua == "10th")
+    {
+      document.getElementById('tenthdiv').style.display = 'block';
+      document.getElementById('twelthdiv').style.display = 'none';
+      document.getElementById('TwelfthPercentage').value = 0;
+      document.getElementById('TenthPercentage').value = "";
+    }
+    else if (qua == "12th")
+    {
+      document.getElementById('tenthdiv').style.display = 'block';
+      document.getElementById('twelthdiv').style.display = 'block';
+      document.getElementById('TwelfthPercentage').value = "";
+      document.getElementById('TenthPercentage').value = "";
+    }
+
+  }
+  else
+  {
+    alert("Kindly Select a value")
+    document.getElementById('tenthdiv').style.display = 'none';
+    document.getElementById('twelthdiv').style.display = 'none';
+  }
+}
+
+
+
+function validate()
+{
+  if(document.getElementById('First_name').value != '')
+  {
+      if(document.getElementById('Last_name').value != '')
+      {
+
+          if(document.getElementById('Username').value != '')
+          {
+
+              if(document.getElementById('Dob').value != '')
+              {
+                  if(document.getElementById('Gender').value != 'Select')
+                  {
+                      if(document.getElementById('Phone').value != '')
+                      {
+                          if(document.getElementById('Email').value != '')
+                          {
+                              if(document.getElementById('Password').value != '')
+                              {
+
+                                  if(document.getElementById('Address').value != '')
+                                  {
+
+                                      if(document.getElementById('City').value != '')
+                                      {
+                                          if(document.getElementById('State').value != '')
+                                          {
+                                              if(document.getElementById('LastQualificationReq').value != 'Select')
+                                              {
+                                                   if(document.getElementById('TenthPercentage').value != '')
+                                                    {
+                                                         if(document.getElementById('TwelfthPercentage').value != '')
+                                                            {
+                                                              document.getElementById('form1').submit()
+                                                              return true; 
+                                                            }
+                                                            else
+                                                            {
+                                                            alert("Kindly enter Twelfth Percentage");
+                                                            return false;
+                                                            }
+                                                    }
+                                                    else
+                                                    {
+                                                    alert("Kindly enter Tenth Percentage");
+                                                    return false;
+                                                    }
+                                              }
+                                              else
+                                              {
+                                              alert("Kindly Select Last Qualification Requied");
+                                              return false;
+                                              }
+
+                                          }
+                                          else
+                                          {
+                                          alert("Kindly enter State");
+                                          return false;
+                                          }
+
+                                      }
+                                      else
+                                      {
+                                      alert("Kindly enter City");
+                                      return false;
+                                      }
+
+                                  }
+                                  else
+                                  {
+                                  alert("Kindly enter Address");
+                                  return false;
+                                  }
+
+                              }
+                              else
+                              {
+                              alert("Kindly  enter Password");
+                              return false;
+                              }
+                          }     
+                          else
+                          {
+                          alert("Kindly enter Email");
+                          return false;
+                          }   
+                      }
+                      else
+                      {
+                      alert("Kindly enter Phone");
+                      return false;
+                      }
+
+                  }
+                  else
+                  {
+                  alert("Kindly enter Gender");
+                  return false;
+                  }
+
+              }
+              else
+              {
+              alert("Kindly enter Dob");
+              return false;
+              }
+
+          }
+          else
+          {
+          alert("Kindly enter UserName");
+          return false;
+          }
+
+      }
+      else
+      {
+      alert("Kindly  enter Last Name");
+      return false;
+      }
+  }     
+  else
+  {
+  alert("Kindly enter First Name");
+  return false;
+  }
+      
+}
+
+</script>
+
+{% endblock%}
+   

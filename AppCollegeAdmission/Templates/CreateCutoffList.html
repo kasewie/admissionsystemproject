@@ -1,0 +1,296 @@
+ {% extends 'base.html'%}
+    {% block content%}
+
+    {% if messages %}
+        {% for message in messages %}
+         {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+        {% endfor %}
+
+    {% endif %}
+
+
+<div style="background: url('/media/img/images/home.jpg');background-repeat:no-repeat;background-size:cover;color: white;">
+
+
+    <br>
+  <center>
+  <div>
+    <h2 style="color: white">CREATE CUT-OFF LIST</h2>
+    <hr>
+  </div>
+  </center> 
+<br>
+
+<div class="container" style="background-color: #f1f1f1;width: 60%;" >
+<form class="form-horizontal" action='/CreateCutoffList/'  method="POST" id="form1">
+  {% csrf_token %}
+<br> <br> 
+
+  <div class="row">
+    <div class="col-md-12 "style="margin-bottom: 20px">
+      <label style="color: black"  for="validationTooltip01">College Name :</label>
+      <select name="College_Name" id="College_Name" class="form-control" onchange="Populate()">
+        <option value="Select">Select</option>
+        {% for entry in attributes %}
+        <option value="{{ entry.CollegeName }}">{{ entry.CollegeName }}</option>
+        {% endfor %}
+        
+      </select>
+      
+    </div>
+  </div>
+
+   <div class="row">
+    <div class="col-md-12 "style="margin-bottom: 20px">
+      <label style="color: black"  for="validationTooltip01">Course Name :</label>
+      <select name="CourseName" readonly id="CourseName" class="form-control"  onchange="PopulateCutoff()">
+        <option value="Select">Select</option>
+        
+        
+      </select>
+      
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6" style="margin-bottom: 20px">
+      <label style="color: black" for="validationTooltip03">Second Last Year Cutoff Percentage  :</label>
+      <input type="number" class="form-control" name="SecondlastCutoff" id="SecondlastCutoff" placeholder="Second last Cutoff Percentage" required="" readonly="">
+    </div>
+    <div class="col-md-6" style="margin-bottom: 20px">
+       <label style="color: black" for="validationTooltip03">Last Year Cutoff Percentage :</label>
+      <input type="text" class="form-control" name="LastYearCutoff" id="LastYearCutoff" placeholder="Last Year Cutoff Percentage" required="" readonly="">
+    </div>
+    <br>
+  </div>
+
+
+<div class="row">
+    <div class="col-md-12 "style="margin-bottom: 20px">
+      <label style="color: black"  for="validationTooltip01">Current Cut-off :</label>
+      <input type="number" class="form-control" name="CurrentCutoff" id="CurrentCutoff" placeholder="Current Cut-off" required>
+      
+    </div>
+  </div>
+
+
+<div class="row">
+    <div class="col-md-12 "style="margin-bottom: 20px">
+      <label style="color: black"  for="validationTooltip01">Maximum Number of Students :</label>
+      <input type="number" class="form-control" name="MaximumStudents" id="MaximumStudents" placeholder="Maximum Number of Students" required>
+      
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12 "style="margin-bottom: 20px">
+      <label style="color: black"  for="validationTooltip01">List No :</label>
+       <select name="ListNo" id="ListNo" class="form-control">
+        <option value="Select">Select</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        
+        
+      </select>
+      
+    </div>
+</div>
+
+
+
+<center>
+  <div class="col-md-12">
+      <input type="button" name="" value="Create List &#62;&#62;" class="btn btn-primary" onclick="validate()">
+      <br><br>
+  </div>
+</center>
+
+  <br>
+</form>
+ <br>
+</div>
+<br>
+<br>
+
+
+</div>
+<br> 
+
+
+<script type="text/javascript">
+  
+function validate()
+{
+  if(document.getElementById('College_Name').value != 'Select')
+  {
+      if(document.getElementById('CourseName').value != 'Select')
+      {
+
+          if(document.getElementById('SecondlastCutoff').value != '')
+          {
+
+              if(document.getElementById('LastYearCutoff').value != '')
+              {
+                  if(document.getElementById('CurrentCutoff').value != '' && document.getElementById('CurrentCutoff').value > 35)
+                  {  
+                    if(document.getElementById('MaximumStudents').value != '')
+                      {
+                          
+                        if(document.getElementById('ListNo').value != 'Select')
+                          {                                  
+                                document.getElementById('form1').submit()
+                                return true;                                    
+                          }
+                          else
+                          {
+                          alert("Kindly enter List No");
+                          return false;
+                          }   
+                          
+                      }
+                      else
+                      {
+                      alert("Kindly enter Maximum Students");
+                      return false;
+                      }        
+                  }
+                  else
+                  {
+                  alert("Kindly enter appropriate Current Year Cutoff");
+                  return false;
+                  }
+
+              }
+              else
+              {
+              alert("Kindly enter Last Year Cutoff Percentage");
+              return false;
+              }
+
+          }
+          else
+          {
+          alert("Kindly enter Second Last Year Cutoff Percentage");
+          return false;
+          }
+
+      }
+      else
+      {
+      alert("Kindly  enter Course Name");
+      return false;
+      }
+  }     
+  else
+  {
+  alert("Kindly enter College_Name");
+  return false;
+  }
+
+      
+}
+
+
+
+function Populate() 
+{
+    var CollegeName = $("#College_Name"). val();  
+      if(CollegeName != "Select")
+      {
+
+        $.ajax({
+                type: "POST",
+                url: '{% url 'getdetails' %}',
+                data: 
+                {
+                    'CollegeName': CollegeName,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+
+                },
+                //dataType: 'json',
+                success: function (data) 
+                {
+
+                  var str = data["respond"];
+
+                  var newStr = str.substring(0, str.length-1);
+                  var array = newStr.split('&');
+                  var newstring ="";
+                  for (var i = array.length - 1; i >= 0; i--) 
+                  { 
+                    var ddloption =  document.getElementById('CourseName').options;
+
+                   if( ddloption.value != array[i] )
+                    {   
+                        $("#CourseName").append('<option>'+ array[i] +'</option>');
+
+                    }
+                  }
+                  document.getElementById('CourseName').removeAttribute('readonly');              
+                    
+                }
+              });
+      }
+      else
+      {
+        document.getElementById('CourseName').setAttribute('readonly', true);
+        document.getElementById("CourseName").options.length = 0;
+        document.getElementById("SecondlastCutoff").value = "";
+        document.getElementById("LastYearCutoff").value = "";
+        alert("Kindly Select College Name")
+      }
+
+} 
+
+
+function PopulateCutoff() 
+{
+    var CollegeName = $("#College_Name"). val();  
+    var CourseName = $("#CourseName"). val();
+      if(CourseName != "Select")
+      {
+
+        $.ajax({
+                type: "POST",
+                url: '{% url 'getdetails1' %}',
+                data: 
+                {
+                    'CollegeName': CollegeName,
+                    'CourseName': CourseName,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+
+                },
+                //dataType: 'json',
+                success: function (data) 
+                {
+
+                  var str = data["respond"];
+                  var newStr = str.substring(0, str.length);
+                  var array = newStr.split('&');            
+                  document.getElementById('SecondlastCutoff').value = array[0];    
+                  document.getElementById('LastYearCutoff').value = array[1];         
+                     
+                }
+              });
+      }
+      else
+      {
+        document.getElementById("SecondlastCutoff").value = "";
+        document.getElementById("LastYearCutoff").value = "";
+        alert("Kindly Select College Name")
+      }
+
+}
+
+</script>
+
+
+
+
+
+
+{% endblock%}
+   

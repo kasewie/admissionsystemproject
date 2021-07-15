@@ -1,0 +1,183 @@
+ {% extends 'base.html'%}
+    {% block content%}
+
+    {% if messages %}
+        {% for message in messages %}
+         {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+        {% endfor %}
+
+    {% endif %}
+
+
+<div style="background: url('/media/img/images/home.jpg');background-repeat:no-repeat;background-size:cover;color: white;">
+
+
+    <br>
+  <center>
+  <div>
+    <h2 style="color: white">COLLEGE DETAILS</h2>
+    <hr>
+  </div>
+  </center> 
+<br>
+
+<div class="container" style="background-color: #f1f1f1;width: 60%;" >
+<form class="form-horizontal" action='/AddCollege/'  method="POST" id="form1">
+  {% csrf_token %}
+<br> <br>  
+
+  <div class="row">
+    <div class="col-md-12 "style="margin-bottom: 20px">
+      <label style="color: black"  for="validationTooltip01">College Name :</label>
+      <input type="text" class="form-control" name="College_Name" id="College_Name" placeholder="College Name" value="" required>
+      
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12"style="margin-bottom: 20px">
+      <label style="color: black" for="validationTooltip03">College Address :</label>
+      <input type="text" class="form-control" name="CollegeAddress" id="CollegeAddress" placeholder="College Address" required>
+      
+    </div>
+  </div>
+
+
+
+  <div class="row">
+    <div class="col-md-12" style="margin-bottom: 20px">
+      <label style="color: black" for="inputEmail4">Contact :</label>
+      <input type="number" class="form-control" name="Contact" id="Contact" placeholder="Contact" required>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12" style="margin-bottom: 20px">
+      <label style="color: black" for="inputAddress">Email :</label>
+      <input type="email" class="form-control" name="Email" id="Email" placeholder="Email">
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-12" style="margin-bottom: 20px">
+      <label style="color: black" for="inputAddress">Website :</label>
+      <input type="text" class="form-control" required="" value="" name="Website" id="Website" placeholder="Website">
+    </div>
+  </div>
+  
+  
+  <div class="row">
+    <div class="col-md-6" style="margin-bottom: 20px">
+      <label style="color: black" for="inputCity">City :</label>
+      <input type="text" placeholder="City" required="" class="form-control" name="City" id="City">
+    </div>
+    <div class="col-md-6" style="margin-bottom: 20px">
+      <label style="color: black" for="inputState">State :</label>
+       <input type="text" placeholder="State" required="" class="form-control" name="State" id="State">
+    </div>
+  
+  </div>
+
+  
+
+ 
+<center>
+  <div class="col-md-12">
+      <br>
+      <input type="button" name="" value="Submit &#62;&#62;" class="btn btn-primary" onclick="validate()">
+      <br><br><br>
+  </div>
+</center>
+
+  <br>
+</form>
+ <br>
+</div>
+<br>
+<br>
+
+
+</div>
+<br> 
+
+<script type="text/javascript">
+  
+function validate()
+{
+
+var EmailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+
+  if(document.getElementById('College_Name').value != '')
+  {
+      if(document.getElementById('CollegeAddress').value != '')
+      {
+
+          if(document.getElementById('Contact').value != '')
+          {
+
+              if(document.getElementById('Email').value != '' && EmailRegex.test(document.getElementById('Email').value))
+              {
+                  if(document.getElementById('Website').value != '')
+                  {
+                      if(document.getElementById('City').value != '')
+                      {
+                          if(document.getElementById('State').value != '')
+                          {
+                            document.getElementById('form1').submit()
+                            return true;   
+                          }
+                          else
+                          {
+                          alert("Kindly enter State");
+                          return false;
+                          }   
+                      }
+                      else
+                      {
+                      alert("Kindly enter City");
+                      return false;
+                      }
+
+                  }
+                  else
+                  {
+                  alert("Kindly enter Website");
+                  return false;
+                  }
+
+              }
+              else
+              {
+              alert("Kindly enter Email");
+              return false;
+              }
+
+          }
+          else
+          {
+          alert("Kindly enter Contact");
+          return false;
+          }
+
+      }
+      else
+      {
+      alert("Kindly  enter College Address");
+      return false;
+      }
+  }     
+  else
+  {
+  alert("Kindly enter College Name");
+  return false;
+  }
+
+      
+}
+
+</script>
+
+
+{% endblock%}
+   

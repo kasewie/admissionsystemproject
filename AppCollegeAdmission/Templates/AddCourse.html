@@ -1,0 +1,281 @@
+ {% extends 'base.html'%}
+    {% block content%}
+
+    {% if messages %}
+        {% for message in messages %}
+         {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+        {% endfor %}
+
+    {% endif %}
+
+
+<div style="background: url('/media/img/images/home.jpg');background-repeat:no-repeat;background-size:cover;color: white;">
+
+    <br>
+  <center>
+  <div>
+    <h2 style="color: white">ADD COURSE</h2>
+    <hr>
+  </div>
+  </center> 
+<br>
+
+<div class="container" style="background-color: #f1f1f1;width: 60%;" >
+<form class="form-horizontal" action='/AddCourse/'  method="POST" id="form1">
+  {% csrf_token %}
+<br> <br> 
+
+  <div class="row">
+    <div class="col-md-12 "style="margin-bottom: 20px">
+      <label style="color: black"  for="validationTooltip01">College Name :</label>
+      <select name="College_Name" id="College_Name" class="form-control">
+        <option selected value="Select">Select</option>
+        {% for entry in attributes %}
+        <option value="{{ entry.CollegeName }}">{{ entry.CollegeName }}</option>
+        {% endfor %}
+        
+      </select>
+      
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-12 "style="margin-bottom: 20px">
+      <label style="color: black"  for="validationTooltip01">Course Name :</label>
+      <input type="text" class="form-control" name="CourseName" id="CourseName" placeholder="CourseName" required>     
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-6" style="margin-bottom: 20px">
+      <label style="color: black" for="validationTooltip03">Minimum % Required :</label>
+      <input type="number" class="form-control" name="MinimumPerRequired" id="MinimumPerRequired" placeholder="Minimum % Required" required>
+    </div>
+    <div class="col-md-6" style="margin-bottom: 20px">
+       <label style="color: black" for="validationTooltip03">Maximum Student Capacity :</label>
+      <input type="text" class="form-control" name="MaximumStudentCapacity" id="MaximumStudentCapacity" placeholder="Maximum Student Capacity" required>
+    </div>
+    <br>
+  </div>
+
+
+
+    <div class="row">
+    <div class="col-md-6" style="margin-bottom: 20px">
+      <label style="color: black" for="validationTooltip03">Subject 1 :</label>
+      <input type="text" class="form-control" name="Subject1" id="Subject1" placeholder="Subject 1" required>
+    </div>
+    <div class="col-md-6" style="margin-bottom: 20px">
+       <label style="color: black" for="validationTooltip03">Subject 2 :</label>
+      <input type="text" class="form-control" name="Subject2" id="Subject2" placeholder="Subject 2" required>
+    </div>
+    <br>
+  </div>
+
+
+    <div class="row">
+    <div class="col-md-6" style="margin-bottom: 20px">
+      <label style="color: black" for="validationTooltip03">Subject 3 :</label>
+      <input type="text" class="form-control" name="Subject3" id="Subject3" placeholder="Subject 3" required>
+    </div>
+    <div class="col-md-6" style="margin-bottom: 20px">
+       <label style="color: black" for="validationTooltip03">Subject 4 :</label>
+      <input type="text" class="form-control" name="Subject4" id="Subject4" placeholder="Subject 4" required>
+    </div>
+    <br>
+  </div>
+
+
+  <div class="row">
+        <div class="col-md-6" style="margin-bottom: 20px">
+          <label style="color: black" for="validationTooltip03">Subject 5 :</label>
+          <input type="text" class="form-control" name="Subject5" id="Subject5" placeholder="Subject 5" required>
+        </div>
+        <div class="col-md-6" style="margin-bottom: 20px">
+           <label style="color: black" for="validationTooltip03">Subject 6 :</label>
+          <input type="text" class="form-control" name="Subject6" id="Subject6" placeholder="Subject 6" required>
+        </div>
+    <br>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12"style="margin-bottom: 20px">
+      <label style="color: black" for="validationTooltip03">Second last Cutoff Percentage :</label>
+      <input type="number" class="form-control" name="SecondlastCutoff" id="SecondlastCutoff" placeholder="Second last Cutoff Percentage" required>
+      
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12"style="margin-bottom: 20px">
+      <label style="color: black" for="validationTooltip03">Last Year Cutoff Percentage :</label>
+      <input type="text" class="form-control" name="LastYearCutoff" id="LastYearCutoff" placeholder="Last Year Cutoff Percentage" required>
+      
+    </div>
+  </div>
+
+    <div class="row">
+    <div class="col-md-12"style="margin-bottom: 20px">
+      <label style="color: black" for="validationTooltip03">Last Qualification Required :</label>
+       <select name="LastQualificationReq" id="LastQualificationReq" class="form-control">
+        <option selected value="Select">Select</option>
+        <option selected value="10th">10th</option>
+        <option selected value="12th">12th</option>
+        
+      </select>
+      
+    </div>
+  </div>
+
+
+
+<center>
+  <div class="col-md-12">
+    <br>
+      <input type="button" name="" value="Submit &#62;&#62;" class="btn btn-primary" onclick="validate()">
+      <br><br>
+  </div>
+</center>
+
+  <br>
+</form>
+ <br>
+</div>
+<br>
+<br>
+
+
+</div>
+<br> 
+
+
+<script type="text/javascript">
+ 
+
+
+
+
+function validate()
+{
+  if(document.getElementById('College_Name').value != 'Select')
+  {
+      if(document.getElementById('CourseName').value != '')
+      {
+
+          if(document.getElementById('MinimumPerRequired').value != '')
+          {
+
+              if(document.getElementById('MaximumStudentCapacity').value != '')
+              {
+                  if(document.getElementById('Subject1').value != '')
+                  {
+                      if(document.getElementById('Subject2').value != '')
+                      {
+                          if(document.getElementById('Subject3').value != '')
+                          {
+                              if(document.getElementById('Subject4').value != '')
+                              {
+
+                                  if(document.getElementById('Subject5').value != '')
+                                  {
+
+                                      if(document.getElementById('Subject6').value != '')
+                                      {
+                                          if(document.getElementById('SecondlastCutoff').value != '')
+                                          {
+                                              if(document.getElementById('LastYearCutoff').value != '')
+                                              {
+                                                document.getElementById('form1').submit()
+                                                return true; 
+                                              }
+                                              else
+                                              {
+                                              alert("Kindly enter LastYearCutoff");
+                                              return false;
+                                              }
+
+                                          }
+                                          else
+                                          {
+                                          alert("Kindly enter SecondlastCutoff");
+                                          return false;
+                                          }
+
+                                      }
+                                      else
+                                      {
+                                      alert("Kindly enter Subject6");
+                                      return false;
+                                      }
+
+                                  }
+                                  else
+                                  {
+                                  alert("Kindly enter Subject5");
+                                  return false;
+                                  }
+
+                              }
+                              else
+                              {
+                              alert("Kindly  enter Subject4");
+                              return false;
+                              }
+                          }     
+                          else
+                          {
+                          alert("Kindly enter Subject3");
+                          return false;
+                          }   
+                      }
+                      else
+                      {
+                      alert("Kindly enter Subject2");
+                      return false;
+                      }
+
+                  }
+                  else
+                  {
+                  alert("Kindly enter Subject1");
+                  return false;
+                  }
+
+              }
+              else
+              {
+              alert("Kindly enter Maximum Student Capacity");
+              return false;
+              }
+
+          }
+          else
+          {
+          alert("Kindly enter Minimum Percentage Required");
+          return false;
+          }
+
+      }
+      else
+      {
+      alert("Kindly  enter Course Name");
+      return false;
+      }
+  }     
+  else
+  {
+  alert("Kindly enter College Name");
+  return false;
+  }
+
+      
+}
+
+</script>
+
+
+{% endblock%}
+   

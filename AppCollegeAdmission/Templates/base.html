@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <title>Online College Admission Management System </title>
+  </head>
+  <body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" style="color: white" href="#">Online College Admission Management System </a>
+    </div>
+
+    <ul class="nav navbar-nav ">
+      <li class="active"><a href="{% url 'home'%}">Home</a></li>
+      {% if  request.session.type_id == 'Student' %}
+      <li ><a href="{% url 'ViewCollege'%}">View College details</a></li>
+      <li ><a href="{% url 'ApplyCollege'%}">Apply to College</a></li>
+      <li ><a href="{% url 'SelectedNotification'%}">View CutOff List</a></li>
+    
+    
+      {% elif  request.session.type_id == 'Admin' %}
+      <li ><a href="{% url 'AddCollege'%}">Add College</a></li>
+      <li ><a href="{% url 'AddCourse'%}">Add Course</a></li>
+      <li ><a href="{% url 'ViewStudent'%}">View Students</a></li>
+      <li ><a href="{% url 'ViewCollege'%}">View College</a></li>
+      <li ><a href="{% url 'CreateCutoffList'%}">Cut-Off List</a></li>
+      <li ><a href="{% url 'SelectedNotification'%}">View Students List</a></li>
+    
+     {% endif %}
+      </ul>
+   
+    {% if  request.session.login == 'Yes' %}
+     <ul class="nav navbar-nav navbar-right">
+     <li class="active"><a class=" text-white text-capitalize" href="{% url 'logout'%}">Logout</a></li>
+
+     {% else %}
+      <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-log-in"></span> &nbsp;Login <span class="caret"></span></a>
+        <ul class="dropdown-menu  navbar-inverse" >
+          <li><a  style="color: white;" href="{% url 'Admin_login'%}">Admin</a></li>
+          <li><a  style="color: white;" href="{% url 'Student_login'%}">Student</a></li>
+        </ul>
+
+      </li>
+      {% endif %}
+    </ul>
+    
+  </div>
+</nav>
+
+
+
+
+
+    {% block content%}
+     
+
+    {% endblock%}
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    
+  
+
+
+     <footer class="text-right" style="padding: 10px 20px;background: #222222;color: white;height: 44px">
+      <p style="font-size: small;">Company ©2020. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

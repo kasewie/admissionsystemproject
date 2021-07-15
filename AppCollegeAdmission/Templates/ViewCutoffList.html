@@ -1,0 +1,33 @@
+ {% extends 'base.html'%}
+    {% block content%}
+    {% if messages %}
+        {% for message in messages %}
+         {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+        {% endfor %}
+
+    {% endif %}
+
+<div style="background: url('/media/img/images/home.jpg'); background-repeat:no-repeat;background-size:cover; color: white; height: 800px;  ">
+	 <br>
+  <center>
+  <div>
+    <h2 style="color: white">CUT-OFF LIST</h2>
+    <hr>
+  </div>
+  </center> 
+
+
+  
+	
+
+
+
+
+
+
+	
+</div>
+<br>
+
+    {% endblock%}

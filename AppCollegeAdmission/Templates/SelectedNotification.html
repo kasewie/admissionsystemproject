@@ -1,0 +1,236 @@
+ {% extends 'base.html'%}
+    {% block content%}
+
+    {% if messages %}
+        {% for message in messages %}
+         {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+        {% endfor %}
+
+    {% endif %}
+
+
+<div style="background: url('/media/img/images/home.jpg');background-repeat:no-repeat;background-size:cover;color: white;height: 800px">
+
+
+    <br>
+  <center>
+  <div>
+    <h2 style="color: white">SELECTED STUDENTS</h2>
+    <hr>
+  </div>
+  </center> 
+<br>
+
+<div class="container" style="background-color: #f1f1f1;width: 60%;" >
+<form class="form-horizontal" action='/SelectedNotification/'  method="POST" id="form1">
+  {% csrf_token %}
+<br> <br> 
+
+  <div class="row">
+    <div class="col-md-12 "style="margin-bottom: 20px">
+      <label style="color: black"  for="validationTooltip01">College Name :</label>
+      <select name="College_Name" id="College_Name" class="form-control" onchange="Populate()">
+        <option value="Select">Select</option>
+        {% for entry in attributes %}
+        <option value="{{ entry.CollegeName }}">{{ entry.CollegeName }}</option>
+        {% endfor %}
+        
+      </select>
+      
+    </div>
+  </div>
+
+   <div class="row">
+    <div class="col-md-12 "style="margin-bottom: 20px">
+      <label style="color: black"  for="validationTooltip01">Course Name :</label>
+      <select name="CourseName" readonly id="CourseName" class="form-control" >
+        <option value="Select">Select</option>
+        
+        
+      </select>
+      
+    </div>
+  </div>
+
+
+<div class="row">
+    <div class="col-md-12 "style="margin-bottom: 20px">
+      <label style="color: black"  for="validationTooltip01">List No :</label>
+       <select name="ListNo" id="ListNo" class="form-control">
+        <option value="Select">Select</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        
+        
+      </select>
+      
+    </div>
+</div>
+
+
+
+<center>
+  <div class="col-md-12">
+      <input type="button" name="" value="Create List &#62;&#62;" class="btn btn-primary" onclick="validate()">
+      <br><br>
+  </div>
+</center>
+
+  <br>
+</form>
+ <br>
+</div>
+
+
+
+{% if  Select %}
+<center>
+
+<div class="container-fluid" style="margin-top: 1%;padding:5%;width: 100%;">  
+  <div class="table-responsive "style="height: 400px">
+  <table class="table table-striped table-bordered table-sm" style="background-color: white" >  
+    <thead style="background-color: black;color: white" class="text-white">  
+    <tr>   
+        <th>id</th>    
+        <th>CollegeId</th>  
+        <th>CourseId</th>  
+        <th>Studentid </th>
+        <th>StudentName</th>  
+        <th>Percentage</th>  
+        <th>ListNumber </th>   
+        <th>Status </th>
+        {% if  request.session.type_id == 'Student' %}
+        <th>Confirm Seat</th> 
+        {% endif %}       
+    </tr>  
+    </thead>  
+    <tbody>  
+
+          
+  {% for or in Select %}  
+    <tr style="color: black;background-color: white">  
+          <td>{{ or.id }}</td>  
+          <td>{{ or.CollegeId }}</td>  
+          <td>{{ or.CourseId }}</td>  
+          <td>{{ or.Studentid }}</td>  
+          <td>{{ or.StudentName }}</td>  
+          <td>{{ or.Percentage }}</td>  
+          <td>{{ or.ListNumber }}</td>  
+          <td>{{ or.Status }}</td> 
+          {% if  request.session.type_id == 'Student'  %}
+          <td>
+              {% if  request.session.Student_id == or.Studentid  and or.Status == 'Selected' %}
+              <a class="btn btn-success" href="/AcceptAdmission/{{or.id}}">Confirm</a> 
+              {% endif %} 
+          </td>
+          {% endif %} 
+    </tr> 
+  {% endfor %} 
+
+    </tbody>  
+  </table>
+</div>
+</div>
+</center>
+{% endif %}
+
+<br><br><br>
+
+</div>
+<br> 
+
+
+<script type="text/javascript">
+  
+function validate()
+{
+  if(document.getElementById('College_Name').value != 'Select')
+  {
+      if(document.getElementById('CourseName').value != 'Select')
+      {
+         if(document.getElementById('ListNo').value != 'Select')
+          {                                  
+                document.getElementById('form1').submit()
+                return true;                                    
+          }
+          else
+          {
+          alert("Kindly enter List No");
+          return false;
+          }
+      }
+      else
+      {
+      alert("Kindly  enter Course Name");
+      return false;
+      }
+  }     
+  else
+  {
+  alert("Kindly enter College_Name");
+  return false;
+  }
+
+      
+}
+
+
+
+function Populate() 
+{
+    var CollegeName = $("#College_Name"). val();  
+      if(CollegeName != "Select")
+      {
+
+        $.ajax({
+                type: "POST",
+                url: '{% url 'getdetails' %}',
+                data: 
+                {
+                    'CollegeName': CollegeName,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+
+                },
+                //dataType: 'json',
+                success: function (data) 
+                {
+
+                  var str = data["respond"];
+
+                  var newStr = str.substring(0, str.length-1);
+                  var array = newStr.split('&');
+                  var newstring ="";
+                  for (var i = array.length - 1; i >= 0; i--) 
+                  { 
+                    var ddloption =  document.getElementById('CourseName').options;
+
+                   if( ddloption.value != array[i] )
+                    {   
+                        $("#CourseName").append('<option>'+ array[i] +'</option>');
+
+                    }
+                  }
+                  document.getElementById('CourseName').removeAttribute('readonly');              
+                    
+                }
+              });
+      }
+      else
+      {
+        document.getElementById('CourseName').setAttribute('readonly', true);
+        document.getElementById("CourseName").options.length = 0;
+        document.getElementById("SecondlastCutoff").value = "";
+        document.getElementById("LastYearCutoff").value = "";
+        alert("Kindly Select College Name")
+      }
+
+} 
+
+
+</script>
+
+
+{% endblock%}
+   
